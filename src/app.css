@@ -1,6 +1,7 @@
 .app {
   background-color: pink;
   height: 50px;
+  text-align: center;
   border: 1px solid blue;
 }
 
@@ -9,23 +10,17 @@
   height: 25px;
 }
 
-.rooms {
-  width: 20%;
-  float: left;
-  border: 3px solid;
-}
-
 .board {
   width: 75%;
   height: 500px;
   margin-left: 10%;
   border: 3px solid blue;
 }
-.mainbody {
-  margin-left: 30%
-}
 
 .inputEmail {
-  width: 400px;
-  height: 450px;
+  margin: 5% 20% 5% 20%;
+}
+
+.fixedEmail {
+  width: 100%;
 }
