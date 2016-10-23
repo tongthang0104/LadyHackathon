@@ -12,9 +12,9 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 const config = require('./config');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
-let callbackUrl = "";
+const url = `https://api.havenondemand.com/1/api/sync/highlighttext/v1`;
+const sentimentUrl = `https://api.havenondemand.com/1/api/sync/analyzesentiment/v2`;
+const API_KEY = require('./config').API_KEY;
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
@@ -48,7 +48,6 @@ if (isDeveloping) {
     res.end();
   });
 
-  // callbackUrl = 'http://local.host:8080/api/youTube/auth/callback'
 } else {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
@@ -61,39 +60,48 @@ if (isDeveloping) {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 
-  // callbackUrl = `https://sozaic.herokuapp.com/api/youTube/auth/callback`
 }
 
-/*
-passport.use(new GoogleStrategy({
-    clientID: key.youtube.clientID ||  localApiKeys.youtube.youtubeClientID,
-    clientSecret: key.youtube.clientSecret ||  localApiKeys.youtube.youtubeClientSecret,
-    callbackURL: callbackUrl,
-    passReqToCallback: true
-  },
 
-  function(request, accessToken, refreshToken, profile, cb) {
-    // console.log('TOKEN', accessToken);
-    cb(null, accessToken)
+function getHighlightedText(text, filterWords){
+
+  return axios({
+    method: 'GET',
+    url: url,
+    params: {
+      text: text,
+      highlight_expression: filterWords,
+      apikey: API_KEY
+    }
   })
-);
+}
+
+function getSentiment(text){
+  return axios({
+    method: 'GET',
+    url: sentimentUrl,
+    params: {
+      text: text,
+      apikey: API_KEY
+    }
+  })
+}
 
 
-appRoute.get('api/youTube/auth', passport.authenticate('google', {scope: [
-  // TODO: LOOK UP GMAIL OPTION
-  'https://www.googleapis.com/auth/youtube.readonly',
-  'https://www.googleapis.com/auth/plus.login'
-]}));
+app.post('/api/highlight', jsonParser, function (req, res) {
+  const text = req.body.userEmail;
+  models.Words.findOne({}).then((highlightWord) => {
+    highlightWord = highlightWord.words.join(",");
+    return axios.all([getHighlightedText(text, highlightWord), getSentiment(text)])
+  })
+  .then(axios.spread(function(highlight, sentiment) {
+    let changedEmail = highlight.data;
+    let emailSentiment = sentiment.data;
+    res.status(200).json({changedEmail, emailSentiment});
+  }))
+  .catch(error => console.log(error));
+});
 
-appRoute.get('api/youTube/auth/callback', passport.authenticate('google', {failureRedirect: '/'}),
-  function(req, res) {
-    req.session.google = req.session.passport.user;
-    console.log("this is cookie", req.session)
-
-    res.redirect('/#/feed/youtube')
-  }
-);
-*/
 
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
