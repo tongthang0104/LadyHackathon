@@ -83,8 +83,9 @@ export default class App extends Component {
         <FormGroup className={styles.inputEmail} controlId="formControlsTextarea">
           <h2>Add words to flag</h2>
           <FormControl onKeyUp={this.add} className={styles.email} componentClass="input" type="text" placeholder="Words" />
-          <Button type="submit" onClick={this.update}>Update</Button>
-          <Button type="submit" onClick={this.refresh}>Refresh</Button>
+        <p></p>
+          <Button className={styles.button} type="submit" onClick={this.update}>Update</Button>
+          <Button className={styles.button} type="submit" onClick={this.refresh}>Refresh</Button>
           <div>{this.listWords()}</div>
         </FormGroup>
       </div>

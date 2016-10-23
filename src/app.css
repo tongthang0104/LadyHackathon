@@ -18,7 +18,8 @@
 }
 
 .inputEmail {
-  margin: 5% 20% 5% 20%;
+    margin: 5% 20% 5% 20%;
+    
 }
 
 .fixedEmail {
@@ -26,7 +27,16 @@
 }
 
 .words {
+  font-size : 1.125em;
   float: left;
-  margin: 2px;
-  padding: 2px;
+  margin: 0.2em;
+  padding: 0.4em;
+}
+
+wordsButton {
+    margin : 0.2em;
+}
+
+button {
+    margin : 0.2em;
 }
