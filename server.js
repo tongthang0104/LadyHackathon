@@ -14,12 +14,17 @@ const app = express();
 const config = require('./config');
 const url = `https://api.havenondemand.com/1/api/sync/highlighttext/v1`;
 const sentimentUrl = `https://api.havenondemand.com/1/api/sync/analyzesentiment/v2`;
-const API_KEY = require('./config').API_KEY;
+const API_KEY = require('./config');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const models = require("./models");
 const morgan = require('morgan');
+
+let words = models.Words.findOne({}).then((data) => {
+  words = data.words.join(",").toLowerCase();
+});
+
 
 if (isDeveloping) {
   const compiler = webpack(webpackConfig);
@@ -47,7 +52,6 @@ if (isDeveloping) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
     res.end();
   });
-
 } else {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
@@ -59,7 +63,6 @@ if (isDeveloping) {
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
-
 }
 
 
@@ -71,7 +74,7 @@ function getHighlightedText(text, filterWords){
     params: {
       text: text,
       highlight_expression: filterWords,
-      apikey: API_KEY
+      apikey: API_KEY.API_KEY
     }
   })
 }
@@ -103,7 +106,7 @@ app.post('/api/highlight', jsonParser, function (req, res) {
 });
 
 
-app.listen(port, '0.0.0.0', function onStart(err) {
+app.listen(port, '127.0.0.1', function onStart(err) {
   if (err) {
     console.log(err);
   }
