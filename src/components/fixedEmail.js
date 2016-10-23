@@ -3,27 +3,30 @@ import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
 import SendModal from './sendModal';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styles from '../app.css';
+import ReactHtmlParser from 'react-html-parser';
+
 
 export default class FixedEmail extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
       copied: false
     };
     // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   render() {
+
+    const html = `<div>${this.props.alterEmail}</div>`
     return (
       <div className={styles.inputEmail}>
         <div>
-          <h2>Highlighted Email</h2>
-          <FormControl rows="5" componentClass="textarea" value={this.state.value} className={styles.fixedEmail}
-          onChange={({target: {value}}) => this.setState({value, copied: false})} />
+          <h2>Highlighed Email</h2>
+          <div className={styles.fixedEmail}
+          onChange={() => this.setState({copied: false})}>{ReactHtmlParser(html)}</div>
         </div>
-        <CopyToClipboard text={this.state.value}
+        <CopyToClipboard text={this.props.alterEmail}
           onCopy={() => this.setState({copied: true})}>
           <Button>Copy to clipboard</Button>
         </CopyToClipboard>

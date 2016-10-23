@@ -16,7 +16,7 @@ var WordsSchema = Schema({
 });
 
 var models = {
-  words : mongoose.model('words', WordsSchema)
+  Words : mongoose.model('words', WordsSchema)
 };
 
 let did_crudify = false;

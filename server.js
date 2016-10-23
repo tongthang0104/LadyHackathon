@@ -10,10 +10,19 @@ const axios = require('axios')
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
-const url = `https://api.havenondemand.com/1/api/async/`
-const API_KEY = require('./config').API;
+const url = `https://api.havenondemand.com/1/api/sync/highlighttext/v1`
+const API_KEY = require('./config').API_KEY;
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
+const urlencodedParser = bodyParser.urlencoded({extended: false});
+const models = require("./models");
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+let words = models.Words.findOne({}).then((data) => {
+  words = data.words.join(",").toLowerCase();
+});
+
 let callbackUrl = "";
 
 if (isDeveloping) {
@@ -30,7 +39,6 @@ if (isDeveloping) {
       modules: false
     }
   });
-
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('*', function response(req, res) {
@@ -76,17 +84,19 @@ appRoute.get('api/youTube/auth/callback', passport.authenticate('google', {failu
   }
 );
 
-app.get('/api/highlight', function(req, res) {
-  const text = req.body;
-  const highlightWord = 'sex'
+app.post('/api/highlight', jsonParser, function(req, res) {
+  const text = req.body.userEmail;
+  const highlightWord = words;
   axios({
     method: 'GET',
     url: url,
     params: {
-      apikey: API_KEY,
       text: text,
-      highlight_expression: highlightWord
+      highlight_expression: highlightWord,
+      apikey: API_KEY
     }
+  }).then(function(result) {
+    res.status(200).json(result.data);
   });
 });
 
