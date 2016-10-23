@@ -1,10 +1,10 @@
+'use strict';
+
 import React, {Component} from 'react';
 import styles from '../app.css';
-import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-import axios from 'axios';
+import {Button, FormGroup, FormControl} from 'react-bootstrap';
 
 export default class InputEmail extends Component {
-
 
   render() {
     return (
