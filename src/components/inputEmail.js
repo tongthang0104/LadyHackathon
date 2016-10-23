@@ -1,26 +1,26 @@
 import React, {Component} from 'react';
 import styles from '../app.css';
 import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import axios from 'axios';
 
 export default class InputEmail extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: ''
-    };
-    // this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
   render() {
     return (
-      <div>
+      <form onSubmit={this.props.submitHandler}>
         <FormGroup className={styles.inputEmail} controlId="formControlsTextarea">
           <h2>Email to be filtered</h2>
-          <FormControl rows="5" className={styles.email} componentClass="textarea" placeholder="Email" />
+          <FormControl
+            className={styles.userEmail}
+            type="text"
+            value={this.props.userEmail}
+            componentClass="textarea"
+            placeholder="Email"
+            onChange={this.props.changeHandler}/>
           <Button type="submit">Filter</Button>
         </FormGroup>
-      </div>
+      </form>
     );
   }
 }
