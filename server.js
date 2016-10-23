@@ -46,43 +46,29 @@ if (isDeveloping) {
     res.end();
   });
 
-  callbackUrl = 'http://local.host:8080/api/youTube/auth/callback'
 } else {
   app.use(express.static(__dirname + '/dist'));
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 
-  callbackUrl = `https://sozaic.herokuapp.com/api/youTube/auth/callback`
 }
 
-passport.use(new GoogleStrategy({
-    clientID: key.youtube.clientID ||  localApiKeys.youtube.youtubeClientID,
-    clientSecret: key.youtube.clientSecret ||  localApiKeys.youtube.youtubeClientSecret,
-    callbackURL: callbackUrl,
-    passReqToCallback: true
-  },
+// passport.use(new GoogleStrategy({
+//     clientID: key.youtube.clientID ||  localApiKeys.youtube.youtubeClientID,
+//     clientSecret: key.youtube.clientSecret ||  localApiKeys.youtube.youtubeClientSecret,
+//     callbackURL: callbackUrl,
+//     passReqToCallback: true
+//   },
+//
+//   function(request, accessToken, refreshToken, profile, cb) {
+//     // console.log('TOKEN', accessToken);
+//     cb(null, accessToken)
+//   })
+// );
 
-  function(request, accessToken, refreshToken, profile, cb) {
-    // console.log('TOKEN', accessToken);
-    cb(null, accessToken)
-  })
-);
 
-appRoute.get('api/youTube/auth', passport.authenticate('google', {scope: [
-  // TODO: LOOK UP GMAIL OPTION
-  'https://www.googleapis.com/auth/youtube.readonly',
-  'https://www.googleapis.com/auth/plus.login'
-]}));
 
-appRoute.get('api/youTube/auth/callback', passport.authenticate('google', {failureRedirect: '/'}),
-  function(req, res) {
-    req.session.google = req.session.passport.user;
-    console.log("this is cookie", req.session)
-
-    res.redirect('/#/feed/youtube')
-  }
-);
 
 app.post('/api/highlight', jsonParser, function(req, res) {
   const text = req.body.userEmail;
