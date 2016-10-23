@@ -18,8 +18,8 @@ export default class FixedEmail extends Component {
     return (
       <div className={styles.inputEmail}>
         <div>
-          <h2>Highlighed Email</h2>
-          <textarea value={this.state.value} className={styles.fixedEmail}
+          <h2>Highlighted Email</h2>
+          <FormControl componentClass="textarea" value={this.state.value} className={styles.fixedEmail}
           onChange={({target: {value}}) => this.setState({value, copied: false})} />
         </div>
         <CopyToClipboard text={this.state.value}
