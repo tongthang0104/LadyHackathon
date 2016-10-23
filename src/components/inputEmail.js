@@ -6,7 +6,6 @@ import {Button, FormGroup, FormControl} from 'react-bootstrap';
 
 export default class InputEmail extends Component {
 
-
   render() {
     return (
       <form onSubmit={this.props.submitHandler}>

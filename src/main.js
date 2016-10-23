@@ -11,11 +11,10 @@ import reducers from './reducers/index';
 import routes from './routes';
 
 const createStoreWithMiddleware = applyMiddleware(
- promise 
+ promise
 )(createStore);
 
 ReactDOM.render(
  <Provider store={createStoreWithMiddleware(reducers)}>
    <Router history={browserHistory} routes={routes} />
- </Provider>
- , document.getElementById('root'));
+ </Provider>, document.getElementById('root'));

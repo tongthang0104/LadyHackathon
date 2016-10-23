@@ -8,7 +8,6 @@ import styles from '../app.css';
 import ReactHtmlParser from 'react-html-parser';
 
 export default class FixedEmail extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
