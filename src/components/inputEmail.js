@@ -17,7 +17,7 @@ export default class InputEmail extends Component {
       <div>
         <FormGroup className={styles.inputEmail} controlId="formControlsTextarea">
           <h2>Email to be filtered</h2>
-          <FormControl className={styles.email} componentClass="textarea" placeholder="Email" />
+          <FormControl rows="5" className={styles.email} componentClass="textarea" placeholder="Email" />
           <Button type="submit">Filter</Button>
         </FormGroup>
       </div>
