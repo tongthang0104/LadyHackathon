@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, ControlLabel, FormControl, Modal} from 'react-bootstrap'
+import {Button, FormGroup, FormControl, Modal} from 'react-bootstrap'
 import styles from '../app.css';
 
 export default class SendModal extends Component {
@@ -7,23 +7,23 @@ export default class SendModal extends Component {
     super(props);
     this.state = {
       showModal: false,
-      value: '',
+      value: ''
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
   }
 
-  update(){
-    this.setState({value:this.props.emailText})
+  update() {
+    this.setState({value: this.props.emailText})
   }
 
   close() {
-    this.setState({ showModal: false });
+    this.setState({showModal: false});
   }
 
   open() {
     this.update();
-    this.setState({ showModal: true });
+    this.setState({showModal: true});
   }
 
   render() {
@@ -60,4 +60,4 @@ export default class SendModal extends Component {
       </span>
     );
   }
-};
+}

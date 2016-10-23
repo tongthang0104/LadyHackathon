@@ -1,9 +1,9 @@
-import styles from '../app.css';
 import React, {Component} from 'react';
 import InputEmail from './inputEmail';
 import FixedEmail from './fixedEmail';
 import SendModal from './sendModal';
 import axios from 'axios';
+import NavBar from './navBar';
 
 export default class App extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <h1 className={styles.app}>Cleanify</h1>
+        <NavBar />
         <InputEmail submitHandler={this.handleInputSubmit} changeHandler={this.handleInputChange} userEmail={this.state.userEmail}/>
         <FixedEmail alterEmail={this.state.highlightedEmail}/>
       </div>

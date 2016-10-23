@@ -24,3 +24,9 @@
 .fixedEmail {
   width: 100%;
 }
+
+.words {
+  float: left;
+  margin: 2px;
+  padding: 2px;
+}

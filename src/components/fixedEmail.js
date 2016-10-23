@@ -1,13 +1,12 @@
-'use strict';
-
 import React, {Component} from 'react';
-import {Button} from 'react-bootstrap'
+import {Button, FormControl} from 'react-bootstrap';
 import SendModal from './sendModal';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styles from '../app.css';
 import ReactHtmlParser from 'react-html-parser';
 
 export default class FixedEmail extends Component {
+
   constructor(props) {
     super(props);
     this.state = {

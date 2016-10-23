@@ -86,7 +86,6 @@ app.post('/api/highlight', jsonParser, function(req, res) {
   });
 });
 
-
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
