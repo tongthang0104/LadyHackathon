@@ -12,12 +12,31 @@ export default class FixedEmail extends Component {
     this.state = {
       copied: false
     };
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.sentimentAnalysis = this.sentimentAnalysis.bind(this);
+  }
+
+
+  sentimentAnalysis(){
+    if(!this.props.sentimentAnalysis){
+      return <div></div>
+    }
+
+    let sentimentSentence;
+    const sentimentScore= Math.ceil(this.props.sentimentAnalysis.score*100);
+    if(this.props.sentimentAnalysis.sentiment === 'positive'){
+      sentimentSentence=`Well said! Your email registered as positive, with a score of ${sentimentScore}%`;
+    }else if(this.props.sentimentAnalysis.sentiment === 'negative'){
+      sentimentSentence=`Uh oh, Your email registered as negative, with a score of ${sentimentScore}%`;
+    }else{
+      sentimentSentence=`Your email registered as neutral`;
+    }
+    return (
+      <div>{sentimentSentence}</div>
+    )
   }
 
   render() {
-    const html = `<div>${this.props.alterEmail}</div>`;
-
+    const html = `<div>${this.props.alterEmail}</div>`
     return (
       <div className={styles.inputEmail}>
         <div>
@@ -31,6 +50,7 @@ export default class FixedEmail extends Component {
         </CopyToClipboard>
         <SendModal emailText={this.state.value}/>
         {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
+        {this.sentimentAnalysis()}
       </div>
     );
   }

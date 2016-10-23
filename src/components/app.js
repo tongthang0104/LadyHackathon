@@ -10,7 +10,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       userEmail: '',
-      highlightedEmail: ''
+      highlightedEmail: '',
+      sentiment: null
     };
     this.handleInputSubmit = this.handleInputSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -26,7 +27,12 @@ export default class App extends Component {
     console.log(this.state.userEmail);
     axios.post("/api/highlight", {userEmail: this.state.userEmail})
       .then((response) => {
-        this.setState({highlightedEmail: response.data.text});
+        console.log(response,"what??")
+        this.setState({
+          highlightedEmail: response.data.changedEmail.text,
+          sentiment: response.data.emailSentiment.sentiment_analysis[0].aggregate
+      });
+        console.log("hi?????")
     })
     .catch((error) => {
       console.log(error);
@@ -41,7 +47,7 @@ export default class App extends Component {
       <div>
         <NavBar />
         <InputEmail submitHandler={this.handleInputSubmit} changeHandler={this.handleInputChange} userEmail={this.state.userEmail}/>
-        <FixedEmail alterEmail={this.state.highlightedEmail}/>
+        <FixedEmail alterEmail={this.state.highlightedEmail} sentimentAnalysis={this.state.sentiment}/>
       </div>
     );
   }
