@@ -11,6 +11,6 @@ export default class App extends Component {
         <InputEmail />
         <FixedEmail />
       </div>
-    )
+    );
   }
-};
+}

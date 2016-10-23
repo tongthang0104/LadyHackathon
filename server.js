@@ -43,11 +43,14 @@ if (isDeveloping) {
 
 app.get('/api/highlight', function(req, res) {
   const text = req.body;
+  const highlightWord = 'sex'
   axios({
     method: 'GET',
     url: url,
     params: {
-      apikey: 12345
+      apikey: API_KEY,
+      text: text,
+      highlight_expression: highlightWord
     }
   });
 });

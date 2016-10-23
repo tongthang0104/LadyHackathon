@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import styles from '../app.css';
-import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
-
+import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
 export default class InputEmail extends Component {
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      email: ''
     };
     // this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -21,6 +21,6 @@ export default class InputEmail extends Component {
           <Button type="submit">Filter</Button>
         </FormGroup>
       </div>
-    )
+    );
   }
-};
+}
