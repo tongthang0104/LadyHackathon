@@ -14,7 +14,6 @@ const app = express();
 const config = require('./config');
 const url = `https://api.havenondemand.com/1/api/sync/highlighttext/v1`;
 const sentimentUrl = `https://api.havenondemand.com/1/api/sync/analyzesentiment/v2`;
-const API_KEY = require('./config');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
@@ -74,7 +73,7 @@ function getHighlightedText(text, filterWords){
     params: {
       text: text,
       highlight_expression: filterWords,
-      apikey: API_KEY.API_KEY
+      apikey: config.API_KEY
     }
   })
 }
@@ -85,7 +84,7 @@ function getSentiment(text){
     url: sentimentUrl,
     params: {
       text: text,
-      apikey: API_KEY
+      apikey: config.API_KEY
     }
   })
 }
@@ -121,7 +120,7 @@ function getHighlight(req, res) {
   const highlightWord = 'sex'
   axios({
     method: 'GET',
-    url: config.url,
+    url: url,
     params: {
       apikey: config.API_KEY,
       text: text,
