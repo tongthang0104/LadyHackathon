@@ -11,7 +11,7 @@ import reducers from './reducers/index';
 import routes from './routes';
 
 const createStoreWithMiddleware = applyMiddleware(
- promise
+ promise 
 )(createStore);
 
 ReactDOM.render(
@@ -19,8 +19,3 @@ ReactDOM.render(
    <Router history={browserHistory} routes={routes} />
  </Provider>
  , document.getElementById('root'));
-
-// ReactDOM.render(
-//   <App />,
-//   document.getElementById('root')
-// );

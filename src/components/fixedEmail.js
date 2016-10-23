@@ -1,10 +1,11 @@
+'use strict';
+
 import React, {Component} from 'react';
-import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 import SendModal from './sendModal';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styles from '../app.css';
 import ReactHtmlParser from 'react-html-parser';
-
 
 export default class FixedEmail extends Component {
 
@@ -17,8 +18,8 @@ export default class FixedEmail extends Component {
   }
 
   render() {
+    const html = `<div>${this.props.alterEmail}</div>`;
 
-    const html = `<div>${this.props.alterEmail}</div>`
     return (
       <div className={styles.inputEmail}>
         <div>
