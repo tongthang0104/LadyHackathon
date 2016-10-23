@@ -4,5 +4,4 @@ dist
 *.log
 coverage
 .idea
-
-config
+apiKey.js

@@ -3,13 +3,13 @@ import {Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styles from '../app.css';
 
-
 export default class FixedEmail extends Component {
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
-      value: "",
-      copied: false,
+      value: '',
+      copied: false
     };
     // this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -29,6 +29,6 @@ export default class FixedEmail extends Component {
         <Button>Send</Button>
         {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
       </div>
-    )
+    );
   }
-};
+}
