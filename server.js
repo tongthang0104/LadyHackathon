@@ -11,7 +11,7 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 const url = `https://api.havenondemand.com/1/api/async/`
-const API_KEY = require('./apiKey');
+const API_KEY = require('./config').API;
 
 if (isDeveloping) {
   const compiler = webpack(config);
