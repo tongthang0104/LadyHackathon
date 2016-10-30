@@ -24,7 +24,6 @@ let words = models.Words.findOne({}).then((data) => {
   words = data.words.join(",").toLowerCase();
 });
 
-
 if (isDeveloping) {
   const compiler = webpack(webpackConfig);
   const middleware = webpackMiddleware(compiler, {
@@ -64,9 +63,7 @@ if (isDeveloping) {
   });
 }
 
-
-function getHighlightedText(text, filterWords){
-
+function getHighlightedText(text, filterWords) {
   return axios({
     method: 'GET',
     url: url,
@@ -78,7 +75,7 @@ function getHighlightedText(text, filterWords){
   })
 }
 
-function getSentiment(text){
+function getSentiment(text) {
   return axios({
     method: 'GET',
     url: sentimentUrl,
@@ -89,11 +86,11 @@ function getSentiment(text){
   })
 }
 
-
 app.post('/api/highlight', jsonParser, function (req, res) {
   const text = req.body.userEmail;
   models.Words.findOne({}).then((highlightWord) => {
     highlightWord = highlightWord.words.join(",");
+
     return axios.all([getHighlightedText(text, highlightWord), getSentiment(text)])
   })
   .then(axios.spread(function(highlight, sentiment) {
@@ -104,14 +101,12 @@ app.post('/api/highlight', jsonParser, function (req, res) {
   .catch(error => console.log(error));
 });
 
-
-app.listen(port, '127.0.0.1', function onStart(err) {
+app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
   }
   console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
 });
-
 
 // functions
 
