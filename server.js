@@ -41,7 +41,7 @@ if (isDeveloping) {
   });
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
-  app.use(morgan('combined'));
+  app.use(morgan('dev'));
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('/api/highlight', getHighlight);

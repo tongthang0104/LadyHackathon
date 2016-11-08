@@ -6,33 +6,55 @@ export default class SendModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      disabled : true,
       showModal: false,
-      value: '',
       email: '',
-      subject: ''
+      subject: '',
+      message: ''
     };
     this.sendEmail = this.sendEmail.bind(this);
     this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.update = this.update.bind(this);
+    this.disabled = this.disabled.bind(this);
+    this.sendEmail = this.sendEmail.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
     this.changeEmailState = this.changeEmailState.bind(this);
     this.changeSubjectState = this.changeSubjectState.bind(this);
+    this.changeMessageState = this.changeMessageState.bind(this);
     this.validationEmail = this.validationEmail.bind(this);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    this.disabled();
+  }
+
+  disabled() {
+    const enabled =  ((this.validationEmail(this.state.email) === 'success') &&
+                      (this.state.email.length !== 0) &&
+                      (this.state.subject.length !== 0) &&
+                      (this.state.message.length !== 0));
+    if (this.state.disabled === enabled) {
+      this.setState({disabled : !enabled});
+    }
   }
 
   update() {
-    this.setState({value: this.props.emailText})
+    if (this.props.emailText) {
+      this.setState({message: this.props.emailText})
+    }
   }
 
   close() {
     this.setState({showModal: false});
   }
 
-  sendEmail(recipient, subject = '', messages) {
+  sendEmail(recipient, subject = '', message) {
     this.sendMessage(
       {
         'To': recipient,
         'Subject': subject
       },
-        messages,
+        message,
         () => {
           this.setState({showModal: false});
           alert('Your email is sent');
@@ -67,24 +89,27 @@ export default class SendModal extends Component {
   }
 
   changeEmailState(e) {
-    this.setState({
-      email: e.target.value
-    });
+    const { target : { value } } = e;
+    this.setState({ email: value });
+  }
+
+  changeMessageState(e) {
+    const { target : { value } } = e;
+    this.setState({ message : value });
   }
 
   changeSubjectState(e) {
-    this.setState({
-      message: e.target.value
-    });
+    const { target : {value} } = e;
+    this.setState({ subject: value });
   }
 
   validationEmail(e) {
-    console.log(e);
+    // console.log(e);
     var email = this.state.email;
-    if (this.state.email === '') {
-      return 'error';
-    } else {
+    if (this.state.email.match(/.+@.+\..+/)) {
       return 'success';
+    } else {
+      return 'error';
     }
   }
 
@@ -92,6 +117,7 @@ export default class SendModal extends Component {
     return (
       <span>
         <Button
+          disabled={this.props.disabled}
           bsStyle="primary"
           onClick={this.open}
         >
@@ -110,14 +136,14 @@ export default class SendModal extends Component {
               <input type="text" className="form-control" id="compose-subject" placeholder="Subject" onKeyUp={this.changeSubjectState} required/>
             </FormGroup>
             <FormGroup>
-              <FormControl componentClass="textarea" rows="10" value={this.state.value} className={styles.fixedEmail}
-              id="compose-message" onChange={({target: {value}}) => this.setState({value})} />
+              <FormControl componentClass="textarea" rows="10" value={this.state.message} className={styles.fixedEmail}
+              id="compose-message" onChange={this.changeMessageState} />
             </FormGroup>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>Close</Button>
-            <Button bsStyle="primary" onClick={() => {
-              this.sendEmail(this.state.email, this.state.subject, this.state.value);
+            <Button id="sendButton" disabled={this.state.disabled} bsStyle="primary" onClick={() => {
+              this.sendEmail(this.state.email, this.state.subject, this.state.message);
             }}>Send</Button>
           </Modal.Footer>
         </Modal>

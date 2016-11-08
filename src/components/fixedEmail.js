@@ -69,9 +69,11 @@ export default class FixedEmail extends Component {
         </div>
         <CopyToClipboard text={this.props.alterEmail}
           onCopy={() => this.setState({copied: true})}>
-          <Button>Copy to clipboard</Button>
+          <Button disabled={this.props.alterEmail.length === 0}>
+            Copy to clipboard
+          </Button>
         </CopyToClipboard>
-        <SendModal emailText={this.state.value}/>
+        <SendModal disabled={this.props.alterEmail.length === 0} emailText={this.props.alterEmail}/>
         {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
         {this.sentimentAnalysis()}
       </div>
