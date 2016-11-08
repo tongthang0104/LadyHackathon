@@ -18,7 +18,7 @@ export default class InputEmail extends Component {
             componentClass="textarea"
             placeholder="Email"
             onChange={this.props.changeHandler}/>
-          <Button type="submit">Filter</Button>
+          <Button type="submit" disabled={this.props.userEmail.length === 0}>Filter</Button>
         </FormGroup>
       </form>
     );
