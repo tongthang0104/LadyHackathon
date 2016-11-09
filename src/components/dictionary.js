@@ -82,9 +82,10 @@ export default class App extends Component {
     }
   }
   refresh() {
+    const component = this;
     axios.get('api/words')
     .then((result) =>{
-      this.setState({words: result.data.words, newWords : [], deleteWords : []});
+      component.setState({words: result.data.words, newWords : [], deleteWords : []});
     });
   }
   
