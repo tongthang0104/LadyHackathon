@@ -60,6 +60,7 @@ export default class FixedEmail extends Component {
           scope="https://www.googleapis.com/auth/gmail.compose"
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
+          className={styles.loginToSend}
         /> }
 
         <div>

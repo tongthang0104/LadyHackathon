@@ -9,12 +9,16 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      words: []
+      newWords: [], // work with addWord
+      deleteWords: [], // work with deleteWord
+      words: [] // work with listWords, update, refresh
     };
+    this.styles = styles;
     this.listWords = this.listWords.bind(this);
-    this.update = this.update.bind(this);
-    this.refresh = this.refresh.bind(this);
-    this.add = this.add.bind(this);
+    this.update = this.update.bind(this); // write to server
+    this.refresh = this.refresh.bind(this); // read from server
+    this.addWord = this.addWord.bind(this);
+    this.deleteWord = this.deleteWord.bind(this);
   }
 
   componentWillMount() {
@@ -22,73 +26,116 @@ export default class App extends Component {
   }
 
   deleteWord(index) {
-    return () => {
-      const newSet = this.state.words.filter((item, i) => { return i !== index;});
-      this.setState({words: newSet});
-    };
+    const component = this;
+    return (e) => {
+      e.preventDefault();
+      const parent = e.target.parentNode;
+      const oldWord = parent.textContent.trim();
+      if (component.state.newWords.includes(oldWord)) {
+        const newWords = component.state.newWords.filter((word) => (word !== oldWord));
+        const words = component.state.words.filter((word) => (word !== oldWord));
+        component.setState({ newWords, words });
+      } else if (!component.state.deleteWords.includes(oldWord)) {
+        const deleteWords = component.state.deleteWords.slice().concat(oldWord);
+        component.setState({ deleteWords });
+      } else { // un-delete
+        const deleteWords = component.state.deleteWords.filter((word) => (word !== oldWord));
+        component.setState({ deleteWords });
+      }
+    }
   }
 
   update() {
-    console.log(this.state.words, 'hiawjofijaw')
-    axios.post('api/words', {newWords: this.state.words})
-    .then(
-      console.log
-    )
+    const component = this;
+    const updatedWords = component.state.words.filter((word) => {
+      return (!component.state.deleteWords.includes(word));
+    });
+    axios.post('api/words', {newWords: updatedWords})
+    .then((result) => {
+      component.setState({words : result.data, newWords : [], deleteWords : []});
+    });
   }
-  addWords(adder) {
-    this.setState({words : adder});
-  }
+
   componentDidUpdate(prevState, prevProps) {
     if (prevState.words != this.state.words) {
-       this.update();
+      // console.log('word', {deleteWords : this.state.deleteWords, newWords: this.state.newWords });
     }
   }
-  add(event) {
+
+  addWord(event) {
+    const component = this;
     event.preventDefault();
-    console.log({"add": event.target.value, key : event.keyCode});
     const enter = 13;
     if ((event.target.value) && (event.keyCode === enter)) {
-      const cat = this.state.words;
-      if(!cat.includes(event.target.value)){
-      cat.push(event.target.value);
-      this.addWords(cat);
-    }
-      // this.update();
-      event.target.value = '';
+      const words = component.state.words.slice();
+      const enteredWord = event.target.value.trim();
+      if(!words.includes(enteredWord)){
+        words.push(enteredWord);
+        const newWords = component.state.newWords.slice().concat(enteredWord);
+        event.target.value = '';
+        component.setState({ newWords, words });
+      } else {
+        // popover....
+      }
+
     }
   }
   refresh() {
     axios.get('api/words')
     .then((result) =>{
-      this.setState({words: result.data.words});
+      this.setState({words: result.data.words, newWords : [], deleteWords : []});
     });
   }
-
+  
   listWords() {
-    const dog = this.state.words;
-    console.log(dog,'dog')
-    return dog.map((word, i) =>{
+    const component = this;
+    const words = component.state.words;
+    return words.map((word, i) =>{
+      const labelClassNames = getLabelClassNames(component, word);
+      const buttonClassName = getButtonClassNames(component, word);
       return (
-        <Label className={styles.words} key={i}> {word} {'  '}
-          <i onClick={this.deleteWord(i)} className="fa fa-times" aria-hidden="true"></i>
-        </Label>
+          <Label className={labelClassNames} key={i}> {word} {'  '}
+            <i onClick={component.deleteWord(i)} className={buttonClassName} aria-hidden="true"></i>
+          </Label>
       );
     });
+
+    function getButtonClassNames(component, word) {
+      if (component.state.deleteWords.includes(word)) {
+        return "fa fa-plus";
+      }
+      if (component.state.newWords.includes(word)) {
+        return "fa fa-times";
+      } 
+      return "fa fa-times";
+    }
+    
+    function getLabelClassNames(component, word) {
+      let classNames = component.styles.words;
+      if (component.state.newWords.includes(word)) {
+        classNames += " " + component.styles.addWord;
+      }
+      if (component.state.deleteWords.includes(word)) {
+        classNames += " " + component.styles.deleteWord;
+      }
+      return classNames;
+    }
   }
 
   render() {
+    const component = this;
     return (
-      <div>
-        <NavBar />
-        <FormGroup className={styles.inputEmail} controlId="formControlsTextarea">
-          <h2>Add words to flag</h2>
-          <FormControl onKeyUp={this.add} className={styles.email} componentClass="input" type="text" placeholder="Words" />
-        <p></p>
-          <Button className={styles.button} type="submit" onClick={this.update}>Update</Button>
-          <Button className={styles.button} type="submit" onClick={this.refresh}>Refresh</Button>
-          <div>{this.listWords()}</div>
+        <div>
+          <NavBar />
+          <FormGroup className={component.styles.inputEmail} controlId="formControlsTextarea">
+            <h2>Add words to flag</h2>
+                           <FormControl onKeyUp={this.addWord} className={component.styles.email} componentClass="input" type="text" placeholder="Words" />
+                                                                                                                                  <p></p>
+            <Button className={component.styles.button} type="submit" disabled={((this.state.newWords.length===0)&&(this.state.deleteWords.length===0))}onClick={this.update}>Update</Button>
+                                                                               <Button className={component.styles.button} type="submit" onClick={this.refresh}>Refresh</Button>
+                                                                                                                                                   <div>{this.listWords()}</div>
         </FormGroup>
-      </div>
+        </div>
     );
   }
 }
