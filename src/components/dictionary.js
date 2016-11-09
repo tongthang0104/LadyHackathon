@@ -4,6 +4,7 @@ import NavBar from './navBar';
 import {Button, FormGroup, FormControl, Label} from 'react-bootstrap';
 import axios from 'axios';
 import {url} from '../../config';
+import {ButtonToolbar, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 export default class App extends Component {
   constructor(props) {
@@ -124,17 +125,29 @@ export default class App extends Component {
 
   render() {
     const component = this;
+    const refreshTooltip = (<Tooltip className="in" id="tooltip-refresh">refresh words from the server</Tooltip>);
+    const updateTooltip = (<Tooltip className="in" id="tooltip-update">update words to the server</Tooltip>);
+    const updateDisabled = ((this.state.newWords.length===0)&&(this.state.deleteWords.length===0));
     return (
         <div>
           <NavBar />
           <FormGroup className={component.styles.inputEmail} controlId="formControlsTextarea">
             <h2>Add words to flag</h2>
-                           <FormControl onKeyUp={this.addWord} className={component.styles.email} componentClass="input" type="text" placeholder="Words" />
-                                                                                                                                  <p></p>
-            <Button className={component.styles.button} type="submit" disabled={((this.state.newWords.length===0)&&(this.state.deleteWords.length===0))}onClick={this.update}>Update</Button>
-                                                                               <Button className={component.styles.button} type="submit" onClick={this.refresh}>Refresh</Button>
-                                                                                                                                                   <div>{this.listWords()}</div>
-        </FormGroup>
+               <FormControl onKeyUp={this.addWord} className={component.styles.email}
+                            componentClass="input" type="text" placeholder="Words" />
+               <OverlayTrigger placement="bottom" overlay={updateTooltip}>
+                  <Button className={component.styles.button + " " + "btn-primary"}
+                          type="submit" disabled={updateDisabled} onClick={this.update}>
+                     Update
+                  </Button>
+               </OverlayTrigger>
+               <OverlayTrigger placement="bottom" overlay={refreshTooltip}>
+                  <Button className={component.styles.button} type="submit" onClick={this.refresh}>
+                     Refresh
+                  </Button>
+               </OverlayTrigger>
+               <div>{this.listWords()}</div>
+          </FormGroup>
         </div>
     );
   }
