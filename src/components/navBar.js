@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Navbar, NavItem, Nav} from 'react-bootstrap';
 import { Link } from 'react-router';
+import GoogleLogin from 'react-google-login';
+import styles from '../app.css';
 
 export default class NavBar extends Component {
   render() {

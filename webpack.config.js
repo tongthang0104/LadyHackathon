@@ -29,19 +29,27 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        "presets": ["react", "es2015", "stage-0", "react-hmre"]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          "presets": ["react", "es2015", "stage-0", "react-hmre"]
+        }
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+      },
+      {
+        test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.json$/,
+        loader : 'json-loader'
       }
-    }, {
-      test: /\.json?$/,
-      loader: 'json'
-    }, {
-      test: /\.css$/,
-      loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
-    }]
+    ]
   }
 };

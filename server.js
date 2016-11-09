@@ -136,9 +136,10 @@ function getWords(req, res) {
 }
 
 function postWords(req, res) {
-  console.log(req);
-  models.Words.findOneAndUpdate({}, {words: req.body.newWords}
-   ).then(() => {
-      res.status(200).json({'andrew': 'hey lady'});
+  // console.log(req);
+  const newWords = req.body.newWords;
+  models.Words.findOneAndUpdate({}, {words: newWords}
+   ).then((result) => {
+      res.status(200).json(newWords);
     });
 }

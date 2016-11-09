@@ -1,3 +1,7 @@
+* {
+    font-family : 'Helvetica Neue', 'Roboto';
+}
+
 .app {
   background-color: pink;
   height: 50px;
@@ -19,7 +23,27 @@
 
 .inputEmail {
     margin: 5% 20% 5% 20%;
-    
+}
+
+.loginToSend {
+    font-family : 'Helvetica Neue', 'Roboto';
+    background-color : rgb(209, 72, 54);
+    color : rgb(255, 255, 255);
+    width : 190px;
+    padding-top : 10px;
+    padding-bottom : 10px;
+    border-radius : 2px;
+    border : 1px solid transparent;
+    font-size : 16px;
+    font-weight : bold;
+}
+
+.deleteWord {
+    background-color: red;
+}
+
+.addWord {
+    background-color: green;
 }
 
 .fixedEmail {
