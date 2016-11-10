@@ -40,7 +40,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+        loader : 'style'
+      },
+      {
+        test: /\.css$/,
+        loader: 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
       },
       {
         test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
