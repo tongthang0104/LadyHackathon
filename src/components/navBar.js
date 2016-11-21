@@ -3,6 +3,7 @@ import {Navbar, NavItem, Nav} from 'react-bootstrap';
 import { Link } from 'react-router';
 import GoogleLogin from 'react-google-login';
 import styles from '../app.css';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export default class NavBar extends Component {
   render() {
@@ -16,7 +17,9 @@ export default class NavBar extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem eventKey={1} ><Link to="/add">Add</Link></NavItem>
+            <LinkContainer to="/add">
+               <NavItem eventKey={1}>Add</NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
