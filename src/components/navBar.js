@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Navbar, NavItem, Nav} from 'react-bootstrap';
 import { Link } from 'react-router';
-import GoogleLogin from 'react-google-login';
 import styles from '../app.css';
 import { LinkContainer } from 'react-router-bootstrap';
 
